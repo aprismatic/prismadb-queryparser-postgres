@@ -7,11 +7,6 @@ namespace PrismaDB.QueryParser.Postgres
 {
     public partial class PostgresVisitor : PostgresParserBaseVisitor<object>
     {
-        public override object VisitUseStatement([NotNull] PostgresParser.UseStatementContext context)
-        {
-            return new UseStatement((DatabaseRef)Visit(context.databaseName()));
-        }
-
         public override object VisitShowTablesStatement([NotNull] PostgresParser.ShowTablesStatementContext context)
         {
             return new ShowTablesQuery();

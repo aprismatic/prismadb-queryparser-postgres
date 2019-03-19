@@ -1,4 +1,3 @@
-using System;
 using PrismaDB.QueryAST;
 using PrismaDB.QueryAST.DCL;
 using PrismaDB.QueryAST.DDL;
@@ -351,20 +350,6 @@ namespace ParserTests
             Assert.Equal(OrderDirection.ASC, actual.OrderBy.OrderColumns[2].Second);
         }
 
-        [Fact(DisplayName = "Parse USE")]
-        public void Parse_Use()
-        {
-            // Setup
-            var test = "USE ThisDB";
-
-            // Act
-            var result = PostgresQueryParser.ParseToAst(test);
-
-            // Assert
-            var actual = (UseStatement)result[0];
-            Assert.Equal(new DatabaseRef("ThisDB"), actual.Database);
-        }
-
         [Fact(DisplayName = "Parse DROP TABLE")]
         public void Parse_DropTable()
         {
@@ -384,7 +369,7 @@ namespace ParserTests
         {
             // Setup
             var test = "select tt1.a AS abc, tt2.b FROM tt1 AS table1 INNER JOIN tt2 ON table1.c=tt2.c; " +
-                       "select tt1.a, tt2.b FROM tt1 JOIN tt2 ON tt1.c=tt2.c WHERE tt1.a=123; " +
+                       "select \"tt1\".\"a\", tt2.b FROM tt1 JOIN tt2 ON tt1.c=tt2.c WHERE tt1.a=123; " +
                        "select tt1.a, tt2.b FROM tt1 CROSS JOIN tt2 LEFT OUTER JOIN tt3 ON tt3.c=tt2.c;";
 
             // Act
@@ -632,6 +617,5 @@ namespace ParserTests
             Assert.Equal("c", ((ColumnRef)((Multiplication)((Addition)((Division)((SelectQuery)result[9]).SelectExpressions[0]).left).right).right).ColumnName.id);
             Assert.Equal("d", ((ColumnRef)((Division)((SelectQuery)result[9]).SelectExpressions[0]).right).ColumnName.id);
         }
-
     }
 }

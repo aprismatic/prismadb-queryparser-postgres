@@ -134,17 +134,6 @@ namespace PrismaDB.QueryParser.Postgres
             var res = new ColumnDefinition();
             switch (context.typeName.Text.ToUpperInvariant())
             {
-                case "BIT":
-                    res.DataType = SqlDataType.Postgres_BIT;
-                    break;
-                case "VARBIT":
-                    res.DataType = SqlDataType.Postgres_VARBIT;
-                    break;
-                case "SERIAL":
-                    res.DataType = SqlDataType.Postgres_INT4;
-                    res.AutoIncrement = true;
-                    res.Nullable = false;
-                    break;
                 case "INT2":
                     res.DataType = SqlDataType.Postgres_INT2;
                     break;
@@ -154,8 +143,19 @@ namespace PrismaDB.QueryParser.Postgres
                 case "INT8":
                     res.DataType = SqlDataType.Postgres_INT8;
                     break;
+                case "SERIAL":
+                    res.DataType = SqlDataType.Postgres_INT4;
+                    res.AutoIncrement = true;
+                    res.Nullable = false;
+                    break;
+                case "FLOAT4":
+                    res.DataType = SqlDataType.Postgres_FLOAT4;
+                    break;
                 case "FLOAT8":
                     res.DataType = SqlDataType.Postgres_FLOAT8;
+                    break;
+                case "BYTEA":
+                    res.DataType = SqlDataType.Postgres_BYTEA;
                     break;
                 case "DATE":
                     res.DataType = SqlDataType.Postgres_DATE;
@@ -164,8 +164,6 @@ namespace PrismaDB.QueryParser.Postgres
                     res.DataType = SqlDataType.Postgres_TIMESTAMP;
                     break;
             }
-            if (context.lengthTwoOptionalDimension() != null)
-                res.Length = (int?)Visit(context.lengthTwoOptionalDimension());
             return res;
         }
 
@@ -174,10 +172,15 @@ namespace PrismaDB.QueryParser.Postgres
             var res = new ColumnDefinition();
             switch (context.typeName.Text.ToUpperInvariant())
             {
-                case "BYTEA":
-                    res.DataType = SqlDataType.Postgres_BYTEA;
+                case "BIT":
+                    res.DataType = SqlDataType.Postgres_BIT;
+                    break;
+                case "VARBIT":
+                    res.DataType = SqlDataType.Postgres_VARBIT;
                     break;
             }
+            if (context.lengthOneDimension() != null)
+                res.Length = (int?)Visit(context.lengthOneDimension());
             return res;
         }
 

@@ -94,6 +94,7 @@ WHERE:                               'WHERE';
 INT2:                                'INT2';
 INT4:                                'INT4';
 INT8:                                'INT8';
+FLOAT4:                              'FLOAT4';
 FLOAT8:                              'FLOAT8';
 DECIMAL:                             'DECIMAL';
 DATE:                                'DATE';
@@ -138,7 +139,7 @@ COUNT:                               'COUNT';
 MIN:                                 'MIN';
 MAX:                                 'MAX';
 NOW:                                 'NOW';
-TIMEOFDAY:                            'TIMEOFDAY';
+TIMEOFDAY:                           'TIMEOFDAY';
 
 // Common function Keywords
 

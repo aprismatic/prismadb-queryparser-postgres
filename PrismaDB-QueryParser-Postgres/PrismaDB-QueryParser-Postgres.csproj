@@ -5,6 +5,7 @@
     <Description>SQL query parser (Postgres dialect) for Prisma/DB project.</Description>
     <Company>Nanyang Technological Unviersity</Company>
     <Product>PrismaDB-QueryParser-Postgres</Product>
+    <Authors>Vasily Sidorov (bazzilic)</Authors>
     <RootNamespace>PrismaDB.QueryParser.Postgres</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
@@ -17,7 +18,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Antlr4.Runtime" Version="4.6.6" />
-    <PackageReference Include="PrismaDB-QueryAST" Version="0.3.0.250" />
+    <PackageReference Include="PrismaDB-QueryAST" Version="0.3.0.252" />
   </ItemGroup>
   <ItemGroup>
     <None Update="AntlrPostgresLexer.g4">

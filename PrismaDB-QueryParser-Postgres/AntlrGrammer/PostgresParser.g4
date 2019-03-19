@@ -62,7 +62,7 @@ dclStatement
     ;
 
 utilityStatement
-    : useStatement | showTablesStatement | showColumnsStatement
+    : showTablesStatement | showColumnsStatement
     ;
 
 
@@ -239,10 +239,6 @@ limitClause
 
 // Utility Statements
 
-useStatement
-    : USE databaseName
-    ;
-
 showTablesStatement
     : SHOW TABLES
     ;
@@ -344,13 +340,14 @@ dataType
       )
       lengthOneDimension?                                           #stringDataType
     | typeName=(
-        INT2 | INT4 | INT8 | FLOAT8 |
-        DATE | TIMESTAMP | BIT | VARBIT |
-        DECIMAL | SERIAL
+        INT2 | INT4 | INT8 | SERIAL |
+        FLOAT4 | FLOAT8 |
+        DATE | TIMESTAMP | BYTEA
+      )                                                             #simpleDataType
+    | typeName=(
+        BIT | VARBIT
       )
-      lengthTwoOptionalDimension?                                   #simpleDataType
-    | typeName=BYTEA
-                                                                    #dimensionDataType
+      lengthOneDimension?                                           #dimensionDataType
     ;
 
 lengthOneDimension
