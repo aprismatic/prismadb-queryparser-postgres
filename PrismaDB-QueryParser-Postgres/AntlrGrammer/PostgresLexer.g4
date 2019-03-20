@@ -83,6 +83,7 @@ SHOW:                                'SHOW';
 TABLE:                               'TABLE';
 TABLES:                              'TABLES';
 TO:                                  'TO';
+TYPE:                                'TYPE';
 UPDATE:                              'UPDATE';
 USE:                                 'USE';
 VALUES:                              'VALUES';
