@@ -344,10 +344,6 @@ dataType
         FLOAT4 | FLOAT8 |
         DATE | TIMESTAMP | BYTEA
       )                                                             #simpleDataType
-    | typeName=(
-        BIT | VARBIT
-      )
-      lengthOneDimension?                                           #dimensionDataType
     ;
 
 lengthOneDimension

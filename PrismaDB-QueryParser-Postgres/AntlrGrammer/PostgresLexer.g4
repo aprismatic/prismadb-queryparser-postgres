@@ -104,8 +104,6 @@ VARCHAR:                             'VARCHAR';
 BYTEA:                               'BYTEA';
 TEXT:                                'TEXT';
 SERIAL:                              'SERIAL';
-BIT:                                 'BIT';
-VARBIT:                              'VARBIT';
 
 
 // Encryption keywords

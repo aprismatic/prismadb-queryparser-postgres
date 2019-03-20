@@ -167,23 +167,6 @@ namespace PrismaDB.QueryParser.Postgres
             return res;
         }
 
-        public override object VisitDimensionDataType([NotNull] PostgresParser.DimensionDataTypeContext context)
-        {
-            var res = new ColumnDefinition();
-            switch (context.typeName.Text.ToUpperInvariant())
-            {
-                case "BIT":
-                    res.DataType = SqlDataType.Postgres_BIT;
-                    break;
-                case "VARBIT":
-                    res.DataType = SqlDataType.Postgres_VARBIT;
-                    break;
-            }
-            if (context.lengthOneDimension() != null)
-                res.Length = (int?)Visit(context.lengthOneDimension());
-            return res;
-        }
-
         public override object VisitLengthOneDimension([NotNull] PostgresParser.LengthOneDimensionContext context)
         {
             if (context.intLiteral() != null)
