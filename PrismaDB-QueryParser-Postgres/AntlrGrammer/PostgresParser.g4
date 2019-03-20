@@ -108,7 +108,7 @@ alterTable
 
 alterSpecification
     : ALTER COLUMN?
-      uid columnDefinition                                          #alterByModifyColumn
+      uid TYPE columnDefinition                                          #alterByModifyColumn
     ;
 
 

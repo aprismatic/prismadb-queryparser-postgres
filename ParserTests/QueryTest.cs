@@ -14,7 +14,7 @@ namespace ParserTests
         {
             // Setup
             var test = "ALTER TABLE \"table1\" " +
-                       "ALTER COLUMN col1 TEXT ENCRYPTED FOR (STORE, SEARCH) NULL";
+                       "ALTER COLUMN col1 TYPE TEXT ENCRYPTED FOR (STORE, SEARCH) NULL";
 
             // Act
             var result = PostgresQueryParser.ParseToAst(test);
