@@ -26,6 +26,8 @@ namespace PrismaDB.QueryParser.Postgres
     {
         public override object VisitRoot([NotNull] PostgresParser.RootContext context)
         {
+            if (context.sqlStatements() == null)
+                return new List<Query>();
             return Visit(context.sqlStatements());
         }
 
