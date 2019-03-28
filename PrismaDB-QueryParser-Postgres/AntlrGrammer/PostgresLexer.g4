@@ -139,6 +139,8 @@ MIN:                                 'MIN';
 MAX:                                 'MAX';
 NOW:                                 'NOW';
 TIMEOFDAY:                           'TIMEOFDAY';
+STDDEV_SAMP:                         'STDDEV_SAMP';
+
 
 // Common function Keywords
 

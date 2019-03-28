@@ -3,7 +3,6 @@ using PrismaDB.QueryAST;
 using PrismaDB.QueryAST.DDL;
 using PrismaDB.QueryAST.DML;
 using PrismaDB.QueryParser.Postgres.AntlrGrammer;
-using System;
 using System.Collections.Generic;
 
 namespace PrismaDB.QueryParser.Postgres
