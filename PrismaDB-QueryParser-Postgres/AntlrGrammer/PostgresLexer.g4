@@ -93,10 +93,16 @@ WHERE:                               'WHERE';
 // DATA TYPE Keywords
 
 INT2:                                'INT2';
+SMALLINT:                            'SMALLINT';
 INT4:                                'INT4';
+INT:                                 'INT';
+INTEGER:                             'INTEGER';
 INT8:                                'INT8';
+BIGINT:                              'BIGINT';
 FLOAT4:                              'FLOAT4';
+REAL:                                'REAL';
 FLOAT8:                              'FLOAT8';
+DOUBLE_PRECISION:                    'DOUBLE' SPACE 'PRECISION';
 DECIMAL:                             'DECIMAL';
 DATE:                                'DATE';
 TIMESTAMP:                           'TIMESTAMP';

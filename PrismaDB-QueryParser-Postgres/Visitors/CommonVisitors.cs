@@ -135,12 +135,16 @@ namespace PrismaDB.QueryParser.Postgres
             switch (context.typeName.Text.ToUpperInvariant())
             {
                 case "INT2":
+                case "SMALLINT":
                     res.DataType = SqlDataType.Postgres_INT2;
                     break;
                 case "INT4":
+                case "INT":
+                case "INTEGER":
                     res.DataType = SqlDataType.Postgres_INT4;
                     break;
                 case "INT8":
+                case "BIGINT":
                     res.DataType = SqlDataType.Postgres_INT8;
                     break;
                 case "SERIAL":
@@ -149,6 +153,7 @@ namespace PrismaDB.QueryParser.Postgres
                     res.Nullable = false;
                     break;
                 case "FLOAT4":
+                case "REAL":
                     res.DataType = SqlDataType.Postgres_FLOAT4;
                     break;
                 case "FLOAT8":
@@ -162,6 +167,10 @@ namespace PrismaDB.QueryParser.Postgres
                     break;
                 case "TIMESTAMP":
                     res.DataType = SqlDataType.Postgres_TIMESTAMP;
+                    break;
+                default:
+                    if (context.typeName.Text.ToUpperInvariant().StartsWith("DOUBLE"))
+                        res.DataType = SqlDataType.Postgres_FLOAT8;
                     break;
             }
             return res;
