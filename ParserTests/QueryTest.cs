@@ -135,12 +135,12 @@ namespace ParserTests
             // Setup
             var test = "CREATE TABLE ttt " +
                        "(aaa SERIAL ENCRYPTED FOR (ADDITION, MULTIPLICATION), " +
-                       "\"bbb\" INT8 NULL, " +
+                       "\"bbb\" BIGINT NULL, " +
                        "ccc VARCHAR(80) NOT NULL, " +
                        "ddd VARCHAR(20) ENCRYPTED FOR (STORE, SEARCH), " +
                        "eee TEXT NULL, " +
                        "fff TEXT ENCRYPTED NULL, " +
-                       "ggg FLOAT8, " +
+                       "ggg DOUBLE PRECISION, " +
                        "hhh TIMESTAMP ENCRYPTED DEFAULT CURRENT_TIMESTAMP" + ")";
             // Act
             var result = PostgresQueryParser.ParseToAst(test);

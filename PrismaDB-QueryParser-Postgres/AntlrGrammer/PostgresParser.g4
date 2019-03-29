@@ -341,7 +341,8 @@ dataType
       lengthOneDimension?                                           #stringDataType
     | typeName=(
         INT2 | INT4 | INT8 | SERIAL |
-        FLOAT4 | FLOAT8 |
+        SMALLINT | INT | INTEGER | BIGINT |
+        FLOAT4 | FLOAT8 | REAL | DOUBLE_PRECISION |
         DATE | TIMESTAMP | BYTEA
       )                                                             #simpleDataType
     ;
