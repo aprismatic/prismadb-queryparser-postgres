@@ -1,5 +1,6 @@
 ﻿using Antlr4.Runtime;
 using Antlr4.Runtime.Misc;
+using PrismaDB.Commons;
 using PrismaDB.QueryAST;
 using PrismaDB.QueryParser.Postgres.AntlrGrammer;
 using System;
@@ -11,14 +12,21 @@ namespace PrismaDB.QueryParser.Postgres
     {
         public static List<Query> ParseToAst(String input)
         {
-            var inputStream = new AntlrInputStream(input);
-            var sqlLexer = new PostgresLexer(new CaseChangingCharStream(inputStream, true));
-            var tokens = new CommonTokenStream(sqlLexer);
-            var sqlParser = new PostgresParser(tokens);
+            try
+            {
+                var inputStream = new AntlrInputStream(input);
+                var sqlLexer = new PostgresLexer(new CaseChangingCharStream(inputStream, true));
+                var tokens = new CommonTokenStream(sqlLexer);
+                var sqlParser = new PostgresParser(tokens);
 
-            var visitor = new PostgresVisitor();
-            var res = (List<Query>)visitor.Visit(sqlParser.root());
-            return res;
+                var visitor = new PostgresVisitor();
+                var res = (List<Query>)visitor.Visit(sqlParser.root());
+                return res;
+            }
+            catch (Exception ex) when (!(ex is PrismaParserException))
+            {
+                throw new PrismaParserException("Error occured while parsing query.", ex);
+            }
         }
     }
 

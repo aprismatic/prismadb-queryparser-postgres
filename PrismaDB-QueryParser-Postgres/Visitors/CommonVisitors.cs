@@ -1,4 +1,5 @@
 using Antlr4.Runtime.Misc;
+using PrismaDB.Commons;
 using PrismaDB.QueryAST;
 using PrismaDB.QueryAST.DDL;
 using PrismaDB.QueryAST.DML;
@@ -81,7 +82,7 @@ namespace PrismaDB.QueryParser.Postgres
         public override object VisitHexadecimalLiteral([NotNull] PostgresParser.HexadecimalLiteralContext context)
         {
             if (context.HEXADECIMAL_LITERAL().GetText()[4] == 'X')
-                throw new ApplicationException("Error parsing hexadecimal literal");
+                throw new PrismaParserException("Error parsing hexadecimal literal.");
             var str = context.HEXADECIMAL_LITERAL().GetText().ToUpperInvariant();
             var length = 0;
             length = str.Length - 6;
