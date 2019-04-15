@@ -196,7 +196,7 @@ joinPart
       (
         ON expression
       )?                                                            #innerJoin
-    | (LEFT | RIGHT) OUTER? JOIN tableSourceItem
+    | (LEFT | RIGHT | FULL) OUTER? JOIN tableSourceItem
         (
           ON expression
         )                                                           #outerJoin
