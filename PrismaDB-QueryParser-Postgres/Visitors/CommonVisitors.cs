@@ -169,6 +169,9 @@ namespace PrismaDB.QueryParser.Postgres
                 case "TIMESTAMP":
                     res.DataType = SqlDataType.Postgres_TIMESTAMP;
                     break;
+                case "DECIMAL":
+                    res.DataType = SqlDataType.Postgres_DECIMAL;
+                    break;
                 default:
                     if (context.typeName.Text.ToUpperInvariant().StartsWith("DOUBLE"))
                         res.DataType = SqlDataType.Postgres_FLOAT8;

@@ -343,7 +343,7 @@ dataType
         INT2 | INT4 | INT8 | SERIAL |
         SMALLINT | INT | INTEGER | BIGINT |
         FLOAT4 | FLOAT8 | REAL | DOUBLE_PRECISION |
-        DATE | TIMESTAMP | BYTEA
+        DATE | TIMESTAMP | BYTEA | DECIMAL
       )                                                             #simpleDataType
     ;
 
