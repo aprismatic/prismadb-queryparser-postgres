@@ -65,7 +65,7 @@ namespace PrismaDB.QueryParser.Postgres
 
         public override object VisitDecimalLiteral([NotNull] PostgresParser.DecimalLiteralContext context)
         {
-            return new FloatingPointConstant(Decimal.Parse(context.DECIMAL_LITERAL().GetText()));
+            return new DecimalConstant(Decimal.Parse(context.DECIMAL_LITERAL().GetText()));
         }
 
         public override object VisitStringLiteral([NotNull] PostgresParser.StringLiteralContext context)
@@ -168,6 +168,9 @@ namespace PrismaDB.QueryParser.Postgres
                     break;
                 case "TIMESTAMP":
                     res.DataType = SqlDataType.Postgres_TIMESTAMP;
+                    break;
+                case "DECIMAL":
+                    res.DataType = SqlDataType.Postgres_DECIMAL;
                     break;
                 default:
                     if (context.typeName.Text.ToUpperInvariant().StartsWith("DOUBLE"))
@@ -312,7 +315,7 @@ namespace PrismaDB.QueryParser.Postgres
             var res = new BooleanIn();
             res.Column = (ColumnRef)Visit(context.predicate());
             foreach (var exp in (List<Expression>)Visit(context.expressions()))
-                res.InValues.Add((Constant)exp);
+                res.AddChild((Constant)exp);
             if (context.NOT() != null)
                 res.NOT = true;
             return res;

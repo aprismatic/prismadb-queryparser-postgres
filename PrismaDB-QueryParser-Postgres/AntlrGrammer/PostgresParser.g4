@@ -108,7 +108,7 @@ alterTable
 
 alterSpecification
     : ALTER COLUMN?
-      uid TYPE columnDefinition                                     #alterByModifyColumn
+      uid columnDefinition                                          #alterByModifyColumn
     ;
 
 
@@ -196,7 +196,7 @@ joinPart
       (
         ON expression
       )?                                                            #innerJoin
-    | (LEFT | RIGHT) OUTER? JOIN tableSourceItem
+    | (LEFT | RIGHT | FULL) OUTER? JOIN tableSourceItem
         (
           ON expression
         )                                                           #outerJoin
@@ -343,7 +343,7 @@ dataType
         INT2 | INT4 | INT8 | SERIAL |
         SMALLINT | INT | INTEGER | BIGINT |
         FLOAT4 | FLOAT8 | REAL | DOUBLE_PRECISION |
-        DATE | TIMESTAMP | BYTEA
+        DATE | TIMESTAMP | BYTEA | DECIMAL
       )                                                             #simpleDataType
     ;
 

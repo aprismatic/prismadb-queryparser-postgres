@@ -58,6 +58,7 @@ DROP:                                'DROP';
 ESCAPE:                              'ESCAPE';
 FOR:                                 'FOR';
 FROM:                                'FROM';
+FULL:                                'FULL';
 GROUP:                               'GROUP';
 IN:                                  'IN';
 INNER:                               'INNER';
