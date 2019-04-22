@@ -147,6 +147,7 @@ MAX:                                 'MAX';
 NOW:                                 'NOW';
 TIMEOFDAY:                           'TIMEOFDAY';
 STDDEV_SAMP:                         'STDDEV_SAMP';
+LINREG:                              'LINREG';
 
 
 // Common function Keywords

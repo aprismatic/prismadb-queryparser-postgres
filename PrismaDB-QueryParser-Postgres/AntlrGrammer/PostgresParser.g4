@@ -412,6 +412,7 @@ specificFunction
 scalarFunctionName
     : SUM | AVG | ABS | COUNT | MIN | MAX
     | NOW | TIMEOFDAY | STDDEV_SAMP
+    | LINREG
     ;
 
 functionArgs
