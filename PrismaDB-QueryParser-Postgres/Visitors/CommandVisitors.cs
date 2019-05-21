@@ -41,5 +41,10 @@ namespace PrismaDB.QueryParser.Postgres
                 res.StatusCheck = true;
             return res;
         }
+
+        public override object VisitRebalanceOpetreeCommand([NotNull] PostgresParser.RebalanceOpetreeCommandContext context)
+        {
+            return new RebalanceOpetreeCommand();
+        }
     }
 }
