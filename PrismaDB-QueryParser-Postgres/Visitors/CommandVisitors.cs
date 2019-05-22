@@ -3,6 +3,7 @@ using PrismaDB.QueryAST.DCL;
 using PrismaDB.QueryAST.DDL;
 using PrismaDB.QueryAST.DML;
 using PrismaDB.QueryParser.Postgres.AntlrGrammer;
+using System.Collections.Generic;
 
 namespace PrismaDB.QueryParser.Postgres
 {
@@ -44,7 +45,10 @@ namespace PrismaDB.QueryParser.Postgres
 
         public override object VisitRebalanceOpetreeCommand([NotNull] PostgresParser.RebalanceOpetreeCommandContext context)
         {
-            return new RebalanceOpetreeCommand();
+            var res = new RebalanceOpetreeCommand();
+            if (context.constants() != null)
+                res.WithValues = (List<Constant>)Visit(context.constants());
+            return res;
         }
     }
 }
