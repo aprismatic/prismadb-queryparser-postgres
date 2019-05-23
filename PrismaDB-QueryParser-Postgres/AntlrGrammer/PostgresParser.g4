@@ -93,6 +93,7 @@ columnDefinition
     (
       ( DEFAULT defaultValue )
     )?
+    ( PRIMARY KEY )?
     ;
 
 

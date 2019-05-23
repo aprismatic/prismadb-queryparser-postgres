@@ -45,6 +45,8 @@ namespace PrismaDB.QueryParser.Postgres
                 res.Nullable = (bool)Visit(context.nullNotnull());
             if (context.DEFAULT() != null)
                 res.DefaultValue = (Expression)Visit(context.defaultValue());
+            if (context.PRIMARY() != null)
+                res.PrimaryKey = true;
             return res;
         }
 
