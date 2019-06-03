@@ -136,6 +136,7 @@ ENCRYPT:                             'ENCRYPT';
 DECRYPT:                             'DECRYPT';
 STATUS:                              'STATUS';
 REBALANCE:                           'REBALANCE';
+SAVE:                                'SAVE';
 OPETREE:                             'OPETREE';
 
 

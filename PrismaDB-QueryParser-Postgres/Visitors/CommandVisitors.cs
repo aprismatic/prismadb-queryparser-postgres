@@ -52,5 +52,10 @@ namespace PrismaDB.QueryParser.Postgres
                 res.StatusCheck = true;
             return res;
         }
+
+        public override object VisitSaveOpetreeCommand([NotNull] PostgresParser.SaveOpetreeCommandContext context)
+        {
+            return new SaveOpetreeCommand();
+        }
     }
 }
