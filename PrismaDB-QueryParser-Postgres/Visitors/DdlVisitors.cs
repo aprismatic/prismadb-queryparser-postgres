@@ -17,6 +17,16 @@ namespace PrismaDB.QueryParser.Postgres
             return res;
         }
 
+        public override object VisitCreateIndex([NotNull] PostgresParser.CreateIndexContext context)
+        {
+            var res = new CreateIndexQuery();
+            res.Name = (Identifier)Visit(context.uid());
+            res.OnTable = (TableRef)Visit(context.tableName());
+            foreach (var col in context.fullColumnName())
+                res.OnColumns.Add((ColumnRef)Visit(col));
+            return res;
+        }
+
         public override object VisitCreateDefinitions([NotNull] PostgresParser.CreateDefinitionsContext context)
         {
             var res = new List<ColumnDefinition>();
