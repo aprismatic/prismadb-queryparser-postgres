@@ -61,6 +61,7 @@ FROM:                                'FROM';
 FULL:                                'FULL';
 GROUP:                               'GROUP';
 IN:                                  'IN';
+INDEX:                               'INDEX';
 INNER:                               'INNER';
 INSERT:                              'INSERT';
 INTO:                                'INTO';
