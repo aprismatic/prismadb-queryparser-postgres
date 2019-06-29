@@ -57,5 +57,15 @@ namespace PrismaDB.QueryParser.Postgres
         {
             return new SaveOpetreeCommand();
         }
+
+        public override object VisitLoadOpetreeCommand([NotNull] PostgresParser.LoadOpetreeCommandContext context)
+        {
+            return new LoadOpetreeCommand();
+        }
+
+        public override object VisitLoadSchemaCommand([NotNull] PostgresParser.LoadSchemaCommandContext context)
+        {
+            return new LoadSchemaCommand();
+        }
     }
 }
