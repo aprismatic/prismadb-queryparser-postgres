@@ -9,9 +9,9 @@ namespace PrismaDB.QueryParser.Postgres
 {
     public partial class PostgresVisitor : PostgresParserBaseVisitor<object>
     {
-        public override object VisitExportSettingsCommand([NotNull] PostgresParser.ExportSettingsCommandContext context)
+        public override object VisitExportKeysCommand([NotNull] PostgresParser.ExportKeysCommandContext context)
         {
-            return new ExportSettingsCommand(((StringConstant)Visit(context.stringLiteral())).strvalue);
+            return new ExportKeysCommand(((StringConstant)Visit(context.stringLiteral())).strvalue);
         }
 
         public override object VisitUpdateKeysCommand([NotNull] PostgresParser.UpdateKeysCommandContext context)
@@ -66,6 +66,16 @@ namespace PrismaDB.QueryParser.Postgres
         public override object VisitLoadSchemaCommand([NotNull] PostgresParser.LoadSchemaCommandContext context)
         {
             return new LoadSchemaCommand();
+        }
+
+        public override object VisitSaveSettingsCommand([NotNull] PostgresParser.SaveSettingsCommandContext context)
+        {
+            return new SaveSettingsCommand();
+        }
+
+        public override object VisitLoadSettingsCommand([NotNull] PostgresParser.LoadSettingsCommandContext context)
+        {
+            return new LoadSettingsCommand();
         }
     }
 }
