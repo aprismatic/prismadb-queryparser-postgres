@@ -141,6 +141,7 @@ SAVE:                                'SAVE';
 OPETREE:                             'OPETREE';
 LOAD:                                'LOAD';
 SCHEMA:                              'SCHEMA';
+BYPASS:                              'BYPASS';
 
 
 // Common function names

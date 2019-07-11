@@ -77,5 +77,18 @@ namespace PrismaDB.QueryParser.Postgres
         {
             return new LoadSettingsCommand();
         }
+
+        public override object VisitBypassCommand([NotNull] PostgresParser.BypassCommandContext context)
+        {
+            var res = new BypassCommand();
+
+            if (context.ddlStatement() != null)
+                res.Query = (DdlQuery)Visit(context.ddlStatement());
+
+            if (context.dmlStatement() != null)
+                res.Query = (DmlQuery)Visit(context.dmlStatement());
+
+            return res;
+        }
     }
 }
