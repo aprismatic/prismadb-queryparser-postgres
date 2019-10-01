@@ -360,6 +360,10 @@ hexadecimalLiteral
     : HEXADECIMAL_LITERAL
     ;
 
+parameter
+    : PARAMETER
+    ;
+
 nullLiteral
     : NULL_LITERAL
     ;
@@ -371,7 +375,7 @@ nullNotnull
 constant
     : intLiteral | stringLiteral
     | decimalLiteral | hexadecimalLiteral
-    | nullLiteral
+    | nullLiteral | parameter
     ;
 
 
