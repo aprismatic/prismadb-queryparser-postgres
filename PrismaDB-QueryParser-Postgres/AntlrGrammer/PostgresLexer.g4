@@ -205,7 +205,7 @@ INT_LITERAL:                         '-'? DEC_DIGIT+;
 DECIMAL_LITERAL:                     '-'? (DEC_DIGIT+)? '.' DEC_DIGIT+;
 HEXADECIMAL_LITERAL:                 'E' '\'' '\\' '\\' 'X' (HEX_DIGIT HEX_DIGIT)+ '\'';
 
-
+PARAMETER:                           '$' DEC_DIGIT+;
 
 
 // Hack for dotID

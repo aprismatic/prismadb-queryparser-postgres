@@ -75,14 +75,14 @@ namespace ParserTests
 
             // Assert
             Assert.IsType<SelectQuery>(result1);
-            Assert.IsType<NullConstant>(((SelectQuery)result1).SelectExpressions[0]);
+            Assert.IsType<NullConstant>(((ConstantContainer)((SelectQuery)result1).SelectExpressions[0]).constant);
 
             // Act
             var result2 = PostgresQueryParser.ParseToAst(test2)[0];
 
             // Assert
             Assert.IsType<InsertQuery>(result2);
-            Assert.IsType<NullConstant>(((InsertQuery)result2).Values[0][0]);
+            Assert.IsType<NullConstant>(((ConstantContainer)((InsertQuery)result2).Values[0][0]).constant);
 
             // Act
             var result3 = PostgresQueryParser.ParseToAst(test3)[0];
@@ -288,9 +288,8 @@ namespace ParserTests
             Assert.Equal(new Identifier("TEST"), ((ScalarFunction)actual.SelectExpressions[1]).FunctionName);
             Assert.Equal(new Identifier("TEST('string',12)"),
                 ((ScalarFunction)actual.SelectExpressions[1]).Alias);
-            Assert.Equal("string",
-                (((ScalarFunction)actual.SelectExpressions[1]).Parameters[0] as StringConstant)?.strvalue);
-            Assert.Equal(12, (((ScalarFunction)actual.SelectExpressions[1]).Parameters[1] as IntConstant)?.intvalue);
+            Assert.Equal(new ConstantContainer("string"), ((ScalarFunction)actual.SelectExpressions[1]).Parameters[0]);
+            Assert.Equal(new ConstantContainer(12), ((ScalarFunction)actual.SelectExpressions[1]).Parameters[1]);
         }
 
         [Fact(DisplayName = "Parse INSERT INTO")]
@@ -322,16 +321,16 @@ namespace ParserTests
             Assert.Equal(new Identifier("col3"), actual.Columns[2].ColumnName);
             Assert.Equal(new Identifier("col4"), actual.Columns[3].ColumnName);
             Assert.Equal(3, actual.Values.Count);
-            Assert.Equal(-1, (actual.Values[0][0] as IntConstant)?.intvalue);
-            Assert.Equal(12.345m, (actual.Values[0][1] as DecimalConstant)?.decimalvalue);
-            Assert.Equal("hey", (actual.Values[0][2] as StringConstant)?.strvalue);
-            Assert.Equal(50, (actual.Values[1][1] as IntConstant)?.intvalue);
-            Assert.Equal(3147483647, (actual.Values[1][2] as IntConstant)?.intvalue);
-            Assert.Equal("  ", (actual.Values[1][3] as StringConstant)?.strvalue);
-            Assert.Equal("&", (actual.Values[1][4] as StringConstant)?.strvalue);
-            Assert.Equal(typeof(BinaryConstant), actual.Values[2][0].GetType());
-            Assert.Equal(new byte[] { 0x42, 0x02 }, (actual.Values[2][1] as BinaryConstant)?.binvalue);
-            Assert.Equal(new byte[] { 0xff, 0xff }, (actual.Values[2][2] as BinaryConstant)?.binvalue);
+            Assert.Equal(new ConstantContainer(-1), actual.Values[0][0]);
+            Assert.Equal(new ConstantContainer(12.345m), actual.Values[0][1]);
+            Assert.Equal(new ConstantContainer("hey"), actual.Values[0][2]);
+            Assert.Equal(new ConstantContainer(50), actual.Values[1][1]);
+            Assert.Equal(new ConstantContainer((long)3147483647), actual.Values[1][2]);
+            Assert.Equal(new ConstantContainer("  "), actual.Values[1][3]);
+            Assert.Equal(new ConstantContainer("&"), actual.Values[1][4]);
+            Assert.Equal(typeof(BinaryConstant), ((ConstantContainer)actual.Values[2][0]).constant.GetType());
+            Assert.Equal(new ConstantContainer(new byte[] { 0x42, 0x02 }), actual.Values[2][1]);
+            Assert.Equal(new ConstantContainer(new byte[] { 0xff, 0xff }), actual.Values[2][2]);
         }
 
         [Fact(DisplayName = "Parse SELECT")]
@@ -357,12 +356,12 @@ namespace ParserTests
             Assert.Equal(new ColumnRef("a"), ((BooleanGreaterThan)actual.Where.CNF.AND[1].OR[0]).right);
             Assert.False(((BooleanGreaterThan)actual.Where.CNF.AND[1].OR[0]).NOT);
             Assert.Equal(new ColumnRef("c"), ((BooleanIn)actual.Where.CNF.AND[2].OR[0]).Column);
-            Assert.Equal(new StringConstant("abc"), ((BooleanIn)actual.Where.CNF.AND[2].OR[0]).InValues[0]);
-            Assert.Equal(new StringConstant("def"), ((BooleanIn)actual.Where.CNF.AND[2].OR[0]).InValues[1]);
+            Assert.Equal(new ConstantContainer("abc"), ((BooleanIn)actual.Where.CNF.AND[2].OR[0]).InValues[0]);
+            Assert.Equal(new ConstantContainer("def"), ((BooleanIn)actual.Where.CNF.AND[2].OR[0]).InValues[1]);
             Assert.False(((BooleanIn)actual.Where.CNF.AND[2].OR[0]).NOT);
             Assert.Equal(new ColumnRef("d"), ((BooleanIn)actual.Where.CNF.AND[3].OR[0]).Column);
-            Assert.Equal(new IntConstant(123), ((BooleanIn)actual.Where.CNF.AND[3].OR[0]).InValues[0]);
-            Assert.Equal(new IntConstant(456), ((BooleanIn)actual.Where.CNF.AND[3].OR[0]).InValues[1]);
+            Assert.Equal(new ConstantContainer(123), ((BooleanIn)actual.Where.CNF.AND[3].OR[0]).InValues[0]);
+            Assert.Equal(new ConstantContainer(456), ((BooleanIn)actual.Where.CNF.AND[3].OR[0]).InValues[1]);
             Assert.True(((BooleanIn)actual.Where.CNF.AND[3].OR[0]).NOT);
 
             Assert.Equal(new ColumnRef("t", "a"), actual.GroupBy.GetColumns()[0]);
@@ -421,7 +420,7 @@ namespace ParserTests
                 Assert.Equal(new ColumnRef("tt1", "c"), actual.From.Sources[0].JoinedTables[0].FirstColumn);
                 Assert.Equal(new ColumnRef("tt2", "c"), actual.From.Sources[0].JoinedTables[0].SecondColumn);
                 Assert.Equal(new ColumnRef("tt1", "a"), ((BooleanEquals)actual.Where.CNF.AND[0].OR[0]).left);
-                Assert.Equal(new IntConstant(123), ((BooleanEquals)actual.Where.CNF.AND[0].OR[0]).right);
+                Assert.Equal(new ConstantContainer(123), ((BooleanEquals)actual.Where.CNF.AND[0].OR[0]).right);
                 Assert.Equal(JoinType.INNER, actual.From.Sources[0].JoinedTables[0].JoinType);
             }
             {
@@ -505,7 +504,7 @@ namespace ParserTests
 
             // Assert
             Assert.IsType<ColumnRef>(result.UpdateExpressions[0].Item1);
-            Assert.IsType<NullConstant>(result.UpdateExpressions[0].Item2);
+            Assert.IsType<NullConstant>(result.UpdateExpressions[0].Item2.constant);
         }
 
         [Fact(DisplayName = "Parse operators")]
@@ -540,11 +539,11 @@ namespace ParserTests
             // Assert
             Assert.Equal("a", (((BooleanLike)((SelectQuery)result[0]).Where.CNF.AND[0].OR[0]).Column.ColumnName.id));
             Assert.False(((BooleanLike)((SelectQuery)result[0]).Where.CNF.AND[0].OR[0]).NOT);
-            Assert.Equal("abc%", (((BooleanLike)((SelectQuery)result[0]).Where.CNF.AND[0].OR[0]).SearchValue.strvalue));
+            Assert.Equal(new ConstantContainer("abc%"), ((BooleanLike)((SelectQuery)result[0]).Where.CNF.AND[0].OR[0]).SearchValue);
             Assert.Null(((BooleanLike)((SelectQuery)result[0]).Where.CNF.AND[0].OR[0]).EscapeChar);
 
             Assert.True(((BooleanLike)((SelectQuery)result[1]).Where.CNF.AND[0].OR[0]).NOT);
-            Assert.Equal("a_34", (((BooleanLike)((SelectQuery)result[1]).Where.CNF.AND[0].OR[0]).SearchValue.strvalue));
+            Assert.Equal(new ConstantContainer("a_34"), ((BooleanLike)((SelectQuery)result[1]).Where.CNF.AND[0].OR[0]).SearchValue);
             Assert.Null(((BooleanLike)((SelectQuery)result[1]).Where.CNF.AND[0].OR[0]).EscapeChar);
 
             Assert.Equal('!', (((BooleanLike)((SelectQuery)result[2]).Where.CNF.AND[0].OR[0]).EscapeChar));
@@ -577,10 +576,10 @@ namespace ParserTests
             var result = PostgresQueryParser.ParseToAst(test);
 
             // Assert
-            Assert.Equal("I'm", ((StringConstant)((InsertQuery)result[0]).Values[0][0]).strvalue);
-            Assert.Equal("\\\"escaped\"", ((StringConstant)((InsertQuery)result[0]).Values[0][1]).strvalue);
-            Assert.Equal("\"and", ((StringConstant)((InsertQuery)result[0]).Values[0][2]).strvalue);
-            Assert.Equal("'me 'too", ((StringConstant)((InsertQuery)result[0]).Values[0][3]).strvalue);
+            Assert.Equal(new ConstantContainer("I'm"), ((InsertQuery)result[0]).Values[0][0]);
+            Assert.Equal(new ConstantContainer("\\\"escaped\""), ((InsertQuery)result[0]).Values[0][1]);
+            Assert.Equal(new ConstantContainer("\"and"), ((InsertQuery)result[0]).Values[0][2]);
+            Assert.Equal(new ConstantContainer("'me 'too"), ((InsertQuery)result[0]).Values[0][3]);
         }
 
         [Fact(DisplayName = "Parse order of operations")]
@@ -671,6 +670,39 @@ namespace ParserTests
             Assert.Equal("ss", ((TableSource)result2.From.Sources[0].FirstTable).Table.Table.id);
             Assert.Equal("uu", ((TableSource)result2.From.Sources[2].FirstTable).Table.Table.id);
             Assert.Equal("u", ((TableSource)result2.From.Sources[2].FirstTable).Table.Alias.id);
+        }
+
+        [Fact(DisplayName = "Parse Prepared Statement")]
+        public void Parse_PreparedStatement()
+        {
+            // Setup
+            var test = "INSERT INTO testtable (a, b, c, d) VALUES ($1, $2, $3, $4), ($5, $6, $7, $8)";
+
+            // Act
+            var results = PostgresQueryParser.ParseToAst(test);
+
+            var result = results[0] as InsertQuery;
+            Assert.Equal(8, result.GetConstants().Count);
+            Assert.Equal(new PlaceholderConstant("$1"), result.GetConstants()[0].constant);
+            Assert.Equal(new PlaceholderConstant("$2"), result.GetConstants()[1].constant);
+            Assert.Equal(new PlaceholderConstant("$3"), result.GetConstants()[2].constant);
+            Assert.Equal(new PlaceholderConstant("$4"), result.GetConstants()[3].constant);
+            Assert.Equal(new PlaceholderConstant("$5"), result.GetConstants()[4].constant);
+            Assert.Equal(new PlaceholderConstant("$6"), result.GetConstants()[5].constant);
+            Assert.Equal(new PlaceholderConstant("$7"), result.GetConstants()[6].constant);
+            Assert.Equal(new PlaceholderConstant("$8"), result.GetConstants()[7].constant);
+
+            Assert.Equal(2, result.Values.Count);
+            Assert.Equal(4, result.Values[0].Count);
+            Assert.Equal(4, result.Values[1].Count);
+            Assert.Equal(new ConstantContainer(label: "$1"), result.Values[0][0]);
+            Assert.Equal(new ConstantContainer(label: "$2"), result.Values[0][1]);
+            Assert.Equal(new ConstantContainer(label: "$3"), result.Values[0][2]);
+            Assert.Equal(new ConstantContainer(label: "$4"), result.Values[0][3]);
+            Assert.Equal(new ConstantContainer(label: "$5"), result.Values[1][0]);
+            Assert.Equal(new ConstantContainer(label: "$6"), result.Values[1][1]);
+            Assert.Equal(new ConstantContainer(label: "$7"), result.Values[1][2]);
+            Assert.Equal(new ConstantContainer(label: "$8"), result.Values[1][3]);
         }
     }
 }
